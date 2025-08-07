@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Inventory Plus{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@tabler/icons/iconfont/tabler-icons.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-pink-50 text-gray-800 font-sans min-h-screen">
+
+  <!-- my navbar -->
+  <nav class="bg-white shadow sticky top-0 z-50 w-full px-6 py-3 flex items-center justify-between">
+    <a href="{% url 'main:dashboard_view'%}"><h1 class="text-xl font-bold text-pink-500">Inventory Plus</h1></a>
+    <div class="flex items-center gap-4">
+
+
+      <span class="text-sm text-gray-700 font-semibold">{{ request.user.username|default:"Admin" }}</span>
+      <div class="relative cursor-pointer">
+        <span class="material-icons text-2xl text-gray-600 hover:text-pink-400 transition">
+          notifications
+        </span>
+        
+        <span class="absolute top-0 right-0 bg-red-500 rounded-full w-2 h-2"></span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <img src="{% static 'images/admin4.jpg' %}" alt="Profile" class="w-8 h-8 rounded-full object-cover border border-white-300">
+        <!-- <span class="text-sm text-gray-700 font-semibold">{{ request.user.username|default:"Admin" }}</span> -->
+      </div>
+    </div>
+  </nav>
+
+  <div class="flex">
+
+
+<!-- sidebar -->
+<aside class="w-64 min-h-screen bg-white shadow-lg px-6 py-8 flex flex-col">
+  <div class="flex-1">
+    <nav class="space-y-6">
+      <a href="{% url 'inventory:product_list' %}" class="flex items-center gap-4 text-gray-500 hover:text-pink-400 transition-all duration-200">
+        <span class="material-icons-outlined text-gray-500 text-xl">inventory_2</span>
+        <span class="text-base font-medium">Products</span>
+      </a>
+
+      <a href="#" class="flex items-center gap-4 text-gray-500 hover:text-pink-400 transition-all duration-200">
+        <span class="material-icons-outlined text-gray-500 text-xl">category</span>
+        <span class="text-base font-medium">Categories</span>
+      </a>
+
+      <a href="#" class="flex items-center gap-4 text-gray-500 hover:text-pink-400 transition-all duration-200">
+        <span class="material-icons-outlined text-gray-500 text-xl">local_shipping</span>
+        <span class="text-base font-medium">Suppliers</span>
+      </a>
+
+      <a href="#" class="flex items-center gap-4 text-gray-500 hover:text-pink-400 transition-all duration-200">
+        <span class="material-icons-outlined text-gray-500 text-xl">bar_chart</span>
+        <span class="text-base font-medium">Reports</span>
+      </a>
+    </nav>
+  </div>
+
+  <div class="mt-10">
+    <hr class="my-4 border-gray-200" />
+    <a href="{% url 'main:logout' %}" class="flex items-center gap-3 text-base text-gray-500 hover:text-red-500 transition-all">
+      <span class="material-icons-outlined text-gray-500 text-xl">logout</span>
+      Logout
+    </a>
+  </div>
+</aside>
+
+
+    <!-- content -->
+    <main class="flex-1 px-10 pt-6 pb-8">
+      {% if messages %}
+      <div class="container mx-auto px-4 mb-4">
+        {% for message in messages %}
+          <div class="p-4 mb-2 rounded shadow bg-green-100 text-green-800 flex justify-between items-center" id="msg-{{ forloop.counter }}">
+            <span>{{ message }}</span>
+            <button onclick="document.getElementById('msg-{{ forloop.counter }}').remove()" class="text-green-800 hover:text-green-600 text-lg font-bold">&times;</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    
+
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+</body>
+</html>
+
+

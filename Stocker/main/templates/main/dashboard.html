@@ -1,0 +1,99 @@
+{% extends "main/base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold text-pink-400 mb-6">Hi {{ request.user.username|default:"Admin" }}, welcome back!</h1>
+
+<!-- top cards for summary -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <div class="bg-white p-5 rounded-lg shadow">
+    <p class="text-sm text-gray-500">Total Products</p>
+    <h2 class="text-2xl font-bold text-pink-400">{{ total_products }}</h2>
+  </div>
+  <div class="bg-white p-5 rounded-lg shadow">
+    <p class="text-sm text-gray-500">Low Stock</p>
+    <h2 class="text-2xl font-bold text-red-400">{{ low_stock }}</h2>
+  </div>
+  <div class="bg-white p-5 rounded-lg shadow">
+    <p class="text-sm text-gray-500">Suppliers</p>
+    <h2 class="text-2xl font-bold text-pink-400">{{ total_suppliers }}</h2>
+  </div>
+  <div class="bg-white p-5 rounded-lg shadow">
+    <p class="text-sm text-gray-500">Categories</p>
+    <h2 class="text-2xl font-bold text-pink-400">{{ total_categories }}</h2>
+  </div>
+</div>
+
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <!-- Pie chart using js -->
+  <div class="bg-white p-6 rounded-lg shadow text-center">
+    <h3 class="text-lg font-semibold text-pink-500 mb-4">Category Distribution</h3>
+    <canvas id="categoryPieChart" class="w-full max-w-xs mx-auto"></canvas>
+    <script>
+        const categoryLabels = JSON.parse('{{ labels|safe|escapejs }}');
+        const categoryData = JSON.parse('{{ data|safe|escapejs }}');
+      </script>
+      
+      <script>
+        const ctx = document.getElementById("categoryPieChart").getContext("2d"); 
+        new Chart(ctx, {
+          type: "pie",
+          data: {
+            labels: categoryLabels,
+            datasets: [{
+              data: categoryData,
+              backgroundColor: ['#FBC4C4', '#FDE2E4', '#FADADD', '#fef2f2'],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        });
+      </script> 
+
+  </div>
+
+  <div class="bg-white p-6 rounded-lg shadow">
+    <h3 class="text-lg font-semibold text-pink-500 mb-4">Inventory Summary</h3>
+    <ul class="text-sm text-gray-700 space-y-2">
+      <li>Total Stock in All Products: <strong>{{ total_stock }}</strong></li>
+      <li>Products Low in Stock: <strong>{{ low_stock }}</strong></li>
+      <li>Products Expiring Soon: <strong>{{ expiring_soon|length }}</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="mt-10 bg-white p-6 rounded-lg shadow">
+  <h3 class="text-lg font-semibold text-pink-500 mb-4">Recently Added Products</h3>
+  <table class="w-full table-auto text-left">
+    <thead>
+      <tr class="text-gray-600 text-sm bg-pink-100">
+        <th class="p-2">Name</th>
+        <th class="p-2">Category</th>
+        <th class="p-2">Stock</th>
+        <th class="p-2">Suppliers</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in recent_products %}
+      <tr class="border-b hover:bg-pink-50">
+        <td class="p-2">{{ product.name }}</td>
+        <td class="p-2">{{ product.category.name }}</td>
+        <td class="p-2">{{ product.stock_quantity }}</td>
+        <td class="p-2">{{ product.suppliers.all|join:", " }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4" class="p-2 text-center text-gray-400">No products added yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+

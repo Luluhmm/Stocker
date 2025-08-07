@@ -1,0 +1,34 @@
+{% extends "main/base.html" %}
+{% load widget_tweaks %}
+{% block title %}Add Product{% endblock %}
+{% block content %}
+
+<h1 class="text-2xl font-bold text-pink-500 mb-6">Add New Product</h1>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="mb-4 p-4 rounded bg-green-100 text-green-800 shadow">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow space-y-4">
+  {% csrf_token %}
+  {% for field in form %}
+    <div>
+      <label for="{{ field.id_for_label }}" class="block text-sm font-semibold text-gray-600 mb-1">
+        {{ field.label }}
+      </label>
+      {% render_field field class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-pink-300" %}
+      {% if field.errors %}
+        <p class="text-sm text-red-500 mt-1">{{ field.errors|striptags }}</p>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <div class="flex justify-end">
+    <button type="submit" class="bg-pink-400 text-white px-6 py-2 rounded hover:bg-pink-500">Add Product</button>
+  </div>
+</form>
+
+{% endblock %}

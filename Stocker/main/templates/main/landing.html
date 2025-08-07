@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to Inventory Plus</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url("{% static 'images/lightpink.avif' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  </style>
+</head>
+
+<body class="h-screen relative">
+  <div class="absolute inset-0 bg-white opacity-30"></div>
+
+  <div class="relative z-10 flex items-center justify-center h-full">
+    <div class="text-center bg-white bg-opacity-80 p-10 rounded-xl shadow-xl max-w-md w-full backdrop-blur-sm">
+      <h1 class="text-3xl font-bold text-pink-500 mb-6">Welcome to Inventory Plus</h1>
+      <div class="flex flex-col gap-4">
+        <a href="{% url 'main:login' %}" class="bg-pink-400 text-white py-2 rounded hover:bg-pink-500 transition">Sign In</a>
+        <a href="#" class="border border-pink-400 text-pink-500 py-2 rounded hover:bg-pink-100 transition">Sign Up</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+
+
