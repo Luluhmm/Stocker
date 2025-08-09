@@ -22,11 +22,12 @@
 
       <span class="text-sm text-gray-700 font-semibold">{{ request.user.username|default:"Admin" }}</span>
       <div class="relative cursor-pointer">
-        <span class="material-icons text-2xl text-gray-600 hover:text-pink-400 transition">
-          notifications
-        </span>
-        
-        <span class="absolute top-0 right-0 bg-red-500 rounded-full w-2 h-2"></span>
+        <a href="{% url 'main:alerts_view' %}" class="relative cursor-pointer">
+          <span class="material-icons text-2xl text-gray-600 hover:text-pink-400 transition">
+            notifications
+          </span>
+          <span class="absolute top-0 right-0 bg-red-500 rounded-full w-2 h-2"></span>
+        </a>
       </div>
 
       <div class="flex items-center gap-2">

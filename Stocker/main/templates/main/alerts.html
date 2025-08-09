@@ -1,0 +1,39 @@
+{% extends "main/base.html" %}
+{% block title %}Alerts{% endblock %}
+{% block content %}
+
+<h2 class="text-2xl font-bold text-pink-500 mb-6">Inventory Alerts</h2>
+
+{% if items %}
+  <ul class="space-y-4">
+    {% for item in items %}
+      <li class="bg-pink-50 p-4 rounded shadow">
+        <h3 class="font-semibold text-lg">{{ item.product.name }}</h3>
+        <ul class="mt-2 list-disc list-inside">
+          {% for reason in item.reasons %}
+            <li>
+              {% if reason == "Low Stock" %}
+                <span class="text-red-600">Low Stock ({{ item.product.stock_quantity }})</span>
+              {% elif reason == "Expiring Soon" %}
+                <span class="text-orange-500">Expiring Soon ({{ item.product.expiry_date }})</span>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </li>
+    {% endfor %}
+  </ul>
+
+
+  <form method="post" class="mt-6 text-right">
+    {% csrf_token %}
+    <button type="submit" class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600">
+        Notify Admin
+    </button>
+  </form>
+{% else %}
+  <p class="text-gray-600"> All inventory looks good!</p>
+{% endif %}
+
+{% endblock %}
+
